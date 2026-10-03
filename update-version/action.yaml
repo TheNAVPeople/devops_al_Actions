@@ -1,0 +1,43 @@
+name: Update AL Application Version
+author: The 365 People
+inputs:
+  path:
+    description: Solution path - it can be workspace folder, project folder, project file or workspace file
+    required: true
+  configuration:
+    description: project configuration to use (app.json.<configuration> file will be renamed to app.json)
+    required: false
+  versionmajor:
+    description: Version major to be used during building extension
+    required: false
+  versionminor:
+    description: Version minor to be used during building extension
+    required: false
+  versionbuild:
+    description: Version build to be used during building extension
+    required: false
+  versionrevision:
+    description: Version revision to be used during building extension
+    required: false
+  versionbuildoffset:
+    description: Version build offset to be added to the versionbuild parameter
+    required: false
+  versionrevisionoffset:
+    description: Version revision offset to be added to the versionrevision
+    required: false
+  commitversionchange:
+    description: Commit version update to the repository
+    required: false
+    default: 'false'
+  versionchangecommitmessage:
+    description: Version update commit message
+    required: false
+  syncwithconfigurations:
+    description: Comma separated list, update additional configuration files (<app.json.<configuration>)
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: run
+      shell: powershell
+      run: ${{ github.action_path }}/updateversion.ps1 -Path "${{ inputs.path }}" -BCConfiguration "${{ inputs.configuration }}" -VersionMajor "${{ inputs.versionmajor }}" -VersionMinor "${{ inputs.versionminor }}" -VersionBuild "${{ inputs.versionbuild }}" -VersionRevision "${{ inputs.versionrevision }}" -VersionBuildOffset "${{ inputs.versionbuildoffset }}" -VersionRevisionOffset "${{ inputs.versionrevisionoffset }}" -CommitVersionChange "${{ inputs.commitversionchange }}" -SyncWithConfigurations "${{ inputs.syncwithconfigurations }}" -VersionChangeCommitMessage "${{ inputs.versionchangecommitmessage }}"

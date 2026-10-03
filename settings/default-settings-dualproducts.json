@@ -1,0 +1,63 @@
+{
+    "branches": [
+        {
+            "description": "Release-SaaS",
+            "pattern": "(^live\\\\.*saas$)|(^live\/.*saas$)|(^repository\\\\.*saas$)|(^repository\/.*saas$)|(^repository\\\\saas)|(^repository\/saas)",
+            "prefix": "live,repository",
+            "suffix": "-saas",
+            "preReleaseSuffix": "",
+            "nuGetFeedSuffix": "-saas"
+        },
+        {
+            "description": "Release",
+            "pattern": "(^master$)|(^main$)|(^repository\\\\)|(^repository\/)|(^live\\\\)|(^live\/)",
+            "prefix": "master,main,repository,live",
+            "preReleaseSuffix": ""
+        },
+        {
+            "description": "Development-SaaS",
+            "pattern": "^develop-saas$",
+            "prefix": "develop",
+            "suffix": "-saas",
+            "preReleaseSuffix": "development",
+            "nuGetFeedSuffix": "-saas"
+        },
+        {
+            "description": "Development",
+            "pattern": "^develop$",
+            "prefix": "develop",
+            "preReleaseSuffix": "development"
+        },
+        {
+            "description": "UAT-SaaS",
+            "pattern": "(^release\\\\.*saas$)|(^release\/.*saas$)|(^uat\\\\.*saas$)|(^uat\/.*saas$)|(^release\\\\saas)|(^release\/saas)|(^uat\\\\saas)|(^uat\/saas)",
+            "prefix": "uat,release",
+            "suffix": "-saas",
+            "preReleaseSuffix": "uat",
+            "nuGetFeedSuffix": "-saas"
+        },
+        {
+            "description": "UAT",
+            "pattern": "(^uat$)|(^release\\\\)|(^release\/)|(^uat\\\\)|(^uat\/)",
+            "prefix": "uat,release",
+            "preReleaseSuffix": "uat"
+        },
+        {
+            "description": "Features",
+            "pattern": "(^feature\\\\)|(^feature\/)",
+            "prefix": "feature",
+            "preReleaseSuffix": "[branchnameprefix]"
+        },
+        {
+            "description": "Hotfixes",
+            "pattern": "(^hotfix\\\\)|(^hotfix\/)",
+            "prefix": "hotfix",
+            "preReleaseSuffix": "[branchnameprefix]"
+        },
+        {
+            "description": "Default suffix",
+            "pattern": "",
+            "preReleaseSuffix": "development"
+        }       
+    ]
+}

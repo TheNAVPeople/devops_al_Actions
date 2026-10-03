@@ -1,0 +1,41 @@
+{
+    "name": "TNPDefaultRuleset",
+    "description": "TNP standard set of code analyzers rules",
+    "rules": [
+        {                    
+            "id": "AA0021",
+            "action": "None",
+            "justification": "[Variable declarations should be ordered by type] --> Order is not so important for us"
+        }, 
+        {
+            "id": "AA0232",
+            "action": "None",
+            "justification": "[The FlowField ... of ... should be added to the SIFT key.] --> Broken, raises false alarms"
+        },
+        {
+            "id": "AA0470",
+            "action": "None",
+            "justification": "[Variable '...' with placeholders should have a comment explaining their content] It is required for transaltion, we are not doing it in projects."
+        },
+        {
+            "id": "AW0006",
+            "action": "None",
+            "justification": "[The page '...' should use the UsageCategory and ApplicationArea properties to be searchable.]"
+        },
+        {
+            "id": "LC0003",
+            "action": "Warning",
+            "justification": "Using Object IDs in code is not allowed"
+        },
+        {
+            "id": "PTE0005",
+            "action": "None",
+            "justification": "We are using PerTenantExtensionCop with both SaaS and OnPrem builds"
+        },
+        {
+            "id": "AL1025",
+            "action": "Info",
+            "justification": "Allow non-AL files in workspace"
+        }        
+    ]
+}

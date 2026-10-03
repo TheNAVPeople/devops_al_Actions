@@ -1,0 +1,32 @@
+name: Push AL Apps to the NuGet server
+author: The 365 People
+inputs:
+  path:
+    description: Folder with *.app files to pack and push to NuGet
+    required: true
+  prerelease:
+    description: Prerelease version suffix
+  repository:
+    description: Repository name
+    required: true
+  branch:
+    description: Branch name
+    required: true
+  commit:
+    description: Commit hash
+  uri:
+    description: NuGet feed uri
+    required: true
+  apikey:
+    description: The 365 People NuGet server Api Key
+    required: true
+  settingspath:
+    description: Path to the branches prerelease suffix mapping settings file
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: run
+      shell: powershell
+      run: ${{ github.action_path }}\push-apps -Path "${{ inputs.path }}" -OutputPath "${{ inputs.path }}" -PreRelease "${{ inputs.prerelease }}" -Repository "${{ inputs.repository }}" -Branch "${{ inputs.branch }}" -Commit "${{ inputs.commit }}" -Uri "${{ inputs.uri }}" -ApiKey "${{ inputs.apikey }}" -SettingsPath "${{ inputs.settingspath }}" -DefaultSettingsPath "${{ github.action_path }}\..\settings\default-settings.json"
+

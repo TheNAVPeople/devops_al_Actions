@@ -1,0 +1,12 @@
+name: Read Settings
+author: The 365 People
+inputs:
+  path:
+    description: project root path
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: run
+      shell: powershell
+      run: ${{ github.action_path }}/read-settings.ps1 -Path "${{ inputs.path }}"

@@ -1,0 +1,23 @@
+name: Checks if project can be compiled
+author: The 365 People
+inputs:
+  path:
+    description: Solution path - it can be workspace folder, project folder, project file or workspace file
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Check if project can be compiled
+      shell: powershell
+      run: |
+        $path = "${{ inputs.path }}"
+        $canCompile = "true"
+
+        # Check if project has any *.al files
+        $alFile = (Get-ChildItem -Path $path -Filter "*.al" -Recurse -ErrorAction SilentlyContinue -Force | Select-Object -First 1)
+        if ($null -eq $alFile) {
+          $canCompile = "false"
+        }
+
+        Write-Output "al_can_compile=$canCompile" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+

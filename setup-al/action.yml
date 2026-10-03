@@ -1,0 +1,90 @@
+name: Setup The 365 People AL Development environment
+author: The 365 People
+inputs:
+  psgalleryapikey:
+    description: NuGet server ApiKey with access to the PowerShell Modules feed
+    required: true
+  compilerpath:
+    description: Root folder where AL compiler should be installed, default value is c:\al-compiler
+    default: 'c:\al-compiler'
+  nocompiler:
+    description: Do not download AL compiler
+    default: 'false'  
+  projectpath:
+    description: Project path
+    default: ''
+  compilerversion:
+    description: AL Compiler Version
+    default: ''
+  compilerselect:
+    description: Select compiler
+    default: 'Latest'
+  storageaccount:
+    description: BC Artifacts Storage Account name
+  artifactstype:
+    description: BC Artifacts Type
+    default: 'Marketplace'
+
+runs:
+  using: composite
+  steps:
+    - name: Install TNP AL compiler powershell tools
+      uses: TheNAVPeople/devops_powershell_actions/install-psmodulefromtnppsgallery@v1.0
+      with:
+        modulename: T3PALAppsBuilder
+        apikey: ${{ inputs.psgalleryapikey }}
+
+    - name: Setup compiler
+      shell: powershell
+      run: |
+        $mtx = New-Object System.Threading.Mutex($false, "T3PDevOpsALCompilerInstallation")
+        try {
+          if ($mtx.WaitOne()) {
+            # Update-Module BCContainerHelper -Confirm:$false
+            import-module BCContainerHelper
+            import-module T3PALAppsBuilder
+
+            $compilerType = "${{ inputs.artifactstype }}"
+            $noCompiler = "${{ inputs.nocompiler }}"
+            if ($noCompiler -ne "true") {
+              $navCompilerFlag = "false"
+              $compilerVersion = "${{ inputs.compilerversion }}"
+              $compilerSelect = "${{ inputs.compilerselect }}"
+              $projectPath = "${{ inputs.projectpath }}"
+
+              if ([System.String]::IsNullOrWhiteSpace($compilerSelect)) {
+                $compilerSelect = "Latest"
+              }
+              
+              if (([System.String]::IsNullOrWhiteSpace($compilerVersion)) -and (![System.String]::IsNullOrWhiteSpace($projectPath)))
+              {
+                $platformVersion = Get-T3PALFolderMinPlatformVersion -Path $projectPath
+                if (($null -ne $platformVersion) -and ($platformVersion.Major -eq 11))
+                {
+                  $compilerVersion = $platformVersion.Major.ToString() + "." + $platformVersion.Minor.ToString()
+                }
+              }
+              
+              if (![System.String]::IsNullOrWhiteSpace($compilerVersion))
+              {
+                if ($compilerVersion.startsWith("11."))
+                {
+                  $navCompilerFlag = "true"
+                  $compilerType = "OnPrem"
+                }
+
+                $compilerPath = Install-T3PALCompiler -CompilerPath "${{ inputs.compilerpath }}" -Type $compilerType -Version $compilerVersion -StorageAccount "${{ inputs.storageaccount }}" -Select $compilerSelect
+              } else {
+                $compilerPath = Install-T3PALCompiler -CompilerPath "${{ inputs.compilerpath }}" -Type $compilerType -StorageAccount "${{ inputs.storageaccount }}" -Select $compilerSelect
+              }
+
+              Write-Output "al_compiler_path=$compilerPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+              Write-Output "al_nav_compiler=$navCompilerFlag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append              
+            }
+          }
+        } finally {
+            if ($mtx -ne $null) {
+                [void]$mtx.ReleaseMutex()
+                $mtx.Dispose()
+            }
+        }

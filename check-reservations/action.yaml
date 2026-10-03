@@ -1,0 +1,35 @@
+name: Check object reservations in ProdDev ID Manager Database
+author: The 365 People
+inputs:
+  path:
+    description: Solution path - it can be workspace folder, project folder, project file or workspace file
+    required: true
+  compilerpath:
+    description: full path to the al compiler alc.exe
+    required: true
+  configuration:
+    description: app.json.<configuration> to use
+    required: false
+  preprocessorsymbols:
+    description: comma separated list of preprocessor symbols
+    required: false
+  idranges:  
+    description: comma separated list of id ranges that should be checked
+    required: false
+  reservationsmanagerurl:
+    description: reservation manager url
+    required: false
+  reservationsmanageruser:
+    description: reservation manager user name for basic authentication
+    required: true
+  reservationsmanagerpassword:
+    description: reservation manager user password for basic authentication
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: run
+      shell: powershell
+      run: ${{ github.action_path }}/check-reservations.ps1 -Path "${{ inputs.path }}" -CompilerPath "${{ inputs.compilerpath }}" -Configuration "${{ inputs.configuration }}" -PreprocessorSymbols "${{ inputs.preprocessorsymbols }}" -IdRanges "${{ inputs.idranges }}" -ReservationsManagerUrl "${{ inputs.reservationsmanagerurl }}" -ReservationsManagerUser "${{ inputs.reservationsmanageruser }}" -ReservationsManagerPassword "${{ inputs.reservationsmanagerpassword }}"
+    
