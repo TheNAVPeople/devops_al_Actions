@@ -16,7 +16,7 @@ import-module T3PALAppsBuilder
 
 #update version number
 if ((![System.String]::IsNullOrWhiteSpace($VersionBuild)) -and (![System.String]::IsNullOrWhiteSpace($VersionBuildOffset))) {
-    $newVersionBuildValue = ([int]$VersionBuild) + ([int]$VersionBuildOffset) + 2000
+    $newVersionBuildValue = ([int]$VersionBuild) + ([int]$VersionBuildOffset) + 4000
     $VersionBuild = $newVersionBuildValue.ToString()
 }
 if ((![System.String]::IsNullOrWhiteSpace($VersionRevision)) -and (![System.String]::IsNullOrWhiteSpace($VersionRevisionOffset))) {

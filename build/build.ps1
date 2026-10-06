@@ -283,7 +283,7 @@ if (([System.String]::IsNullOrWhiteSpace($Ruleset)) -and (![System.String]::IsNu
 if (([System.String]::IsNullOrWhiteSpace($ChangeVersion)) -or ($ChangeVersion -eq "true")) {
 
     if ((![System.String]::IsNullOrWhiteSpace($VersionBuild)) -and (![System.String]::IsNullOrWhiteSpace($VersionBuildOffset))) {
-        $newVersionBuildValue = ([int]$VersionBuild) + ([int]$VersionBuildOffset) + 2000
+        $newVersionBuildValue = ([int]$VersionBuild) + ([int]$VersionBuildOffset) + 4000
         $VersionBuild = $newVersionBuildValue.ToString()
     }
 
